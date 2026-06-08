@@ -1,5 +1,3 @@
-// eslint-disable-next-line max-len
-/* eslint-disable @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-explicit-any,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return,@typescript-eslint/no-unsafe-argument */
 import type { Type } from '@nestjs/common';
 import { applyDecorators, UseInterceptors } from '@nestjs/common';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -20,10 +18,10 @@ import type { IApiFile } from '../interfaces/IApiFile.ts';
 const PARAMTYPES_METADATA = 'design:paramtypes';
 
 function reverseObjectKeys(
-  originalObject: Record<string, any>,
-): Record<string, any> {
-  const reversedObject: any = {};
-  const keys = Object.keys(originalObject).reverse();
+  originalObject: Record<string, unknown>,
+): Record<string, unknown> {
+  const reversedObject: Record<string, unknown> = {};
+  const keys = Object.keys(originalObject).toReversed();
 
   for (const key of keys) {
     reversedObject[key] = originalObject[key];
@@ -45,7 +43,7 @@ function explore(instance: object, propertyKey: string | symbol) {
       ROUTE_ARGS_METADATA,
       instance.constructor,
       propertyKey,
-    ) || {};
+    ) ?? {};
 
   const parametersWithType = _.mapValues(
     reverseObjectKeys(routeArgsMetadata),

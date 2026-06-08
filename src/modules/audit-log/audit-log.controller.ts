@@ -10,9 +10,10 @@ import {
 
 import { PageDto } from '../../common/dto/page.dto';
 import { AuditLogService } from './audit-log.service';
+import { AuditEvent } from './constants/audit-event.enum';
 import { AuditLogDto } from './dto/audit-log.dto';
 import { AuditLogPageOptionsDto } from './dto/audit-log-page-options.dto';
-import { AuditEvent, AuditLogEntity } from './entities/audit-log.entity';
+import { AuditLogEntity } from './entities/audit-log.entity';
 
 @Controller()
 @ApiTags('audit-log')
@@ -34,7 +35,12 @@ export class AuditLogController {
   @Get('audit-log/count')
   @ApiOperation({ summary: 'Get total count of audit logs (optimized)' })
   @ApiOkResponse({ description: 'Total count of audit logs' })
-  @ApiQuery({ name: 'event', required: false, enum: AuditEvent })
+  @ApiQuery({
+    name: 'event',
+    required: false,
+    enum: AuditEvent,
+    enumName: 'AuditEvent',
+  })
   @ApiQuery({ name: 'entityType', required: false })
   @ApiQuery({ name: 'dateFrom', required: false })
   @ApiQuery({ name: 'dateTo', required: false })

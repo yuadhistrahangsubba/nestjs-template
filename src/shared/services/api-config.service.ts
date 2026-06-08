@@ -26,6 +26,12 @@ export class ApiConfigService {
     return this.nodeEnv === 'test';
   }
 
+  get tcpTransportPort() {
+    return {
+      port: this.getNumber('TRANSPORT_PORT'),
+    };
+  }
+
   private getNumber(key: string): number {
     const value = this.get(key);
     const num = Number(value);
@@ -97,6 +103,14 @@ export class ApiConfigService {
     };
   }
 
+  // Connect to microservices like NATS
+  //   get commonSvcTcpOptions() {
+  //     return {
+  //       host: this.getString('COMMON_SERVICE_TCP_HOST'),
+  //       port: this.getNumber('COMMON_SERVICE_TCP_PORT'),
+  //     };
+  //   }
+
   get postgresConfig(): TypeOrmModuleOptions {
     const entities = [
       path.join(import.meta.dirname, `../../modules/**/*.entity{.ts,.js}`),
@@ -117,7 +131,7 @@ export class ApiConfigService {
       password: this.getString('DB_PASSWORD'),
       database: this.getString('DB_DATABASE'),
       subscribers: [UserSubscriber, AuditLogSubscriber],
-      migrationsRun: true,
+      migrationsRun: false,
       logging: this.getBoolean('ENABLE_ORM_LOGS'),
       namingStrategy: new SnakeNamingStrategy(),
     };

@@ -17,6 +17,7 @@ import {
   getDataSourceByName,
 } from 'typeorm-transactional';
 
+import { AuditLogModule } from './modules/audit-log/audit-log.module.ts';
 import { AuthModule } from './modules/auth/auth.module.ts';
 import { HealthCheckerModule } from './modules/health-checker/health-checker.module.ts';
 import { UserModule } from './modules/user/user.module.ts';
@@ -65,7 +66,7 @@ import { SharedModule } from './shared/shared.module.ts';
         );
       },
     }),
-    // eslint-disable-next-line canonical/id-match
+
     I18nModule.forRootAsync({
       useFactory: (configService: ApiConfigService) => ({
         fallbackLanguage: configService.fallbackLanguage,
@@ -82,7 +83,11 @@ import { SharedModule } from './shared/shared.module.ts';
       imports: [SharedModule],
       inject: [ApiConfigService],
     }),
+    AuditLogModule,
+    UserModule,
+
     HealthCheckerModule,
+    AuditLogModule,
   ],
   providers: [],
 })

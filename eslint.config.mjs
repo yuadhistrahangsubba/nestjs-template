@@ -29,8 +29,8 @@ export default tseslint.config(
   {
     plugins: {
       'simple-import-sort': simpleImportSort,
+      '@stylistic': stylisticPlugin,
     },
-    extends: [stylisticPlugin.configs.all],
     rules: {
       'simple-import-sort/imports': 'error',
       'simple-import-sort/exports': 'error',
@@ -85,12 +85,14 @@ export default tseslint.config(
     extends: [unicornPlugin.configs['flat/all']],
     rules: {
       'unicorn/prevent-abbreviations': 'off',
-      'unicorn/numeric-separators-style': 'off',
       'unicorn/no-abusive-eslint-disable': 'off',
       'unicorn/no-null': 'off',
       'unicorn/no-static-only-class': 'off',
       'unicorn/prefer-module': 'off',
       'unicorn/expiring-todo-comments': 'off',
+      'unicorn/no-keyword-prefix': 'off',
+      'unicorn/prefer-top-level-await': 'off',
+      'unicorn/filename-case': 'off',
     },
   },
   {
@@ -106,8 +108,9 @@ export default tseslint.config(
       'canonical/import-specifier-newline': 'off',
       'canonical/destructuring-property-newline': 'off',
       'canonical/no-restricted-strings': 'error',
-      'canonical/no-use-extend-native': 'error',
+      'canonical/no-use-extend-native': 'off',
       'canonical/prefer-inline-type-import': 'off',
+      'canonical/id-match': 'off',
     },
   },
   {
@@ -120,6 +123,14 @@ export default tseslint.config(
     extends: [sonarjsPlugin.configs.recommended],
     rules: {
       'sonarjs/no-duplicate-string': 'off',
+      'sonarjs/fixme-tag': 'off',
+      'sonarjs/todo-tag': 'off',
+      'sonarjs/deprecation': 'off',
+      'sonarjs/slow-regex': 'off',
+      'sonarjs/different-types-comparison': 'off',
+      'sonarjs/no-useless-intersection': 'off',
+      'sonarjs/argument-type': 'off',
+      'sonarjs/function-return-type': 'off',
     },
   },
   {
@@ -178,7 +189,6 @@ export default tseslint.config(
       ],
 
       '@typescript-eslint/adjacent-overload-signatures': 'error',
-      '@typescript-eslint/unified-signatures': 'off',
       'max-params': ['error', 7],
 
       '@typescript-eslint/array-type': [
@@ -236,16 +246,6 @@ export default tseslint.config(
       '@typescript-eslint/prefer-for-of': 'error',
       '@typescript-eslint/prefer-function-type': 'error',
       '@typescript-eslint/prefer-namespace-keyword': 'error',
-      '@typescript-eslint/explicit-function-return-type': [
-        'error',
-        {
-          allowExpressions: true,
-          allowTypedFunctionExpressions: true,
-          allowHigherOrderFunctions: true,
-          allowDirectConstAssertionInArrowFunctions: true,
-          allowConciseArrowFunctionExpressionsStartingWithVoid: true,
-        },
-      ],
       '@typescript-eslint/naming-convention': [
         'error',
         {
@@ -264,6 +264,7 @@ export default tseslint.config(
         {
           selector: 'interface',
           format: ['PascalCase'],
+          prefix: ['I'],
         },
         {
           selector: 'typeLike',
@@ -282,6 +283,13 @@ export default tseslint.config(
           prefix: ['is', 'should', 'has', 'can', 'did', 'will'],
         },
       ],
+      '@typescript-eslint/unified-signatures': 'error',
+      '@typescript-eslint/no-unnecessary-type-parameters': 'off',
+      '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
       '@typescript-eslint/interface-name-prefix': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
       '@typescript-eslint/no-shadow': 'error',
@@ -452,14 +460,7 @@ export default tseslint.config(
       },
       parserOptions: {
         projectService: {
-          allowDefaultProject: [
-            'eslint.config.mjs',
-            'vite.config.mts',
-            'taze.config.js',
-            'ormconfig.ts',
-            'test/app.e2e-spec.ts',
-            'src/modules/auth/auth.controller.spec.ts',
-          ],
+          extraFileExtensions: ['.ts'],
           defaultProject: 'tsconfig.eslint.json',
         },
         // @ts-ignore

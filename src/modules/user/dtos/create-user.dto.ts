@@ -18,6 +18,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     enum: RoleType,
+    enumName: 'RoleType',
     example: RoleType.ADMIN,
   })
   @IsEnum(RoleType, { message: 'roleType must be one of: ADMIN, USER' })

@@ -8,10 +8,8 @@ import {
   type UpdateEvent,
 } from 'typeorm';
 
-import {
-  AuditEvent,
-  AuditLogEntity,
-} from '../modules/audit-log/entities/audit-log.entity';
+import { AuditEvent } from '../modules/audit-log/constants/audit-event.enum';
+import { AuditLogEntity } from '../modules/audit-log/entities/audit-log.entity';
 import { ContextProvider } from '../providers/context.provider';
 
 interface IAuditableEntity {

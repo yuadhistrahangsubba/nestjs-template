@@ -13,7 +13,7 @@ import { RoleType } from '../../constants/role-type.ts';
 import { AuthUser } from '../../decorators/auth-user.decorator.ts';
 import { Auth } from '../../decorators/http.decorators.ts';
 import { ApiFile } from '../../decorators/swagger.schema.ts';
-import type { CreateUserDto } from '../user/dtos/create-user.dto.ts';
+import { CreateUserDto } from '../user/dtos/create-user.dto.ts';
 import { UserDto } from '../user/dtos/user.dto.ts';
 import type { UserEntity } from '../user/user.entity.ts';
 import { UserService } from '../user/user.service.ts';
@@ -42,7 +42,7 @@ export class AuthController {
 
     const token = await this.authService.createAccessToken({
       userId: userEntity.id,
-      role: userEntity.role,
+      role: userEntity.roleType,
     });
 
     return LoginPayloadDto.create({

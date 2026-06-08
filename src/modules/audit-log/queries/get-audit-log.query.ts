@@ -92,7 +92,6 @@ export class GetAllAuditLogsHandler
     // Paginate with optimized count query
     const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
 
-    // eslint-disable-next-line sonarjs/argument-type
     return items.toPageDto(pageMetaDto);
   }
 }

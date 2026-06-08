@@ -44,7 +44,6 @@ export class UserService {
 
     const [items, pageMetaDto] = await queryBuilder.paginate(pageOptionsDto);
 
-    // eslint-disable-next-line sonarjs/argument-type
     return items.toPageDto(pageMetaDto);
   }
 

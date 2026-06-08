@@ -12,7 +12,7 @@ export class UserEntity extends AbstractEntity<UserDto> {
   fullName!: string;
 
   @Column({ type: 'enum', enum: RoleType, default: RoleType.USER })
-  role!: RoleType;
+  roleType!: RoleType;
 
   @Column({ type: 'varchar' })
   identificationNo!: string;

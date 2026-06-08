@@ -3,7 +3,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 export function setupSwagger(app: INestApplication): void {
   const documentBuilder = new DocumentBuilder()
-    .setTitle('DKC API')
+    .setTitle('TEMPLATE API')
     .setDescription(
       `### REST
 
@@ -56,12 +56,13 @@ Routes is following REST standard (Richardson level 3)
 
   const document = SwaggerModule.createDocument(app, documentBuilder.build());
   SwaggerModule.setup('documentation', app, document, {
+    useGlobalPrefix: true,
     swaggerOptions: {
       persistAuthorization: true,
     },
   });
 
   console.info(
-    `Documentation: http://localhost:${process.env.PORT}/svc/documentation#`,
+    `Documentation: http://localhost:${process.env.PORT}/svc/template/documentation#`,
   );
 }

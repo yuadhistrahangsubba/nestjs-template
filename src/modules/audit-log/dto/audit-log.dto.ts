@@ -1,10 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 import { AbstractDto } from '../../../common/dto/abstract.dto';
-import { AuditEvent, AuditLogEntity } from '../entities/audit-log.entity';
+import { AuditEvent } from '../constants/audit-event.enum';
+import { AuditLogEntity } from '../entities/audit-log.entity';
 
 export class AuditLogDto extends AbstractDto {
-  @ApiProperty()
+  @ApiProperty({ enum: AuditEvent, enumName: 'AuditEvent' })
   event!: AuditEvent;
 
   @ApiProperty({ type: 'string', maxLength: 100 })

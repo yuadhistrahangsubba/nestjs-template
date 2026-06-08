@@ -11,12 +11,14 @@ import { Transport } from '@nestjs/microservices';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { ExpressAdapter } from '@nestjs/platform-express';
 import compression from 'compression';
+import { middleware as expressCtx } from 'express-ctx';
 import helmet from 'helmet';
 import morgan from 'morgan';
 import { initializeTransactionalContext } from 'typeorm-transactional';
 
 import { AppModule } from './app.module.ts';
 import { HttpExceptionFilter } from './filters/bad-request.filter.ts';
+import { GlobalHttpExceptionFilter } from './filters/http-exception.filter.ts';
 import { QueryFailedFilter } from './filters/query-failed.filter.ts';
 import { TranslationInterceptor } from './interceptors/translation-interceptor.service.ts';
 import { setupSwagger } from './setup-swagger.ts';
@@ -31,7 +33,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     new ExpressAdapter(),
     {
       cors: {
-        origin: process.env.CORS_ORIGINS?.split(',') || [
+        origin: process.env.CORS_ORIGINS?.split(',') ?? [
           'http://localhost:3000',
         ],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
@@ -41,18 +43,22 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   );
   app.enable('trust proxy');
   app.use(helmet());
-  // app.setGlobalPrefix('/api'); use api as global prefix if you don't have subdomain
+  app.setGlobalPrefix('/svc');
   app.use(compression());
   app.use(morgan('combined'));
   app.enableVersioning();
+  app.use(expressCtx);
 
   const reflector = app.get(Reflector);
 
+  // biome-ignore lint/correctness/useHookAtTopLevel: NestJS method, not a React hook
   app.useGlobalFilters(
+    new GlobalHttpExceptionFilter(),
     new HttpExceptionFilter(reflector),
     new QueryFailedFilter(reflector),
   );
 
+  // biome-ignore lint/correctness/useHookAtTopLevel: NestJS method, not a React hook
   app.useGlobalInterceptors(
     new ClassSerializerInterceptor(reflector),
     new TranslationInterceptor(
@@ -60,6 +66,7 @@ export async function bootstrap(): Promise<NestExpressApplication> {
     ),
   );
 
+  // biome-ignore lint/correctness/useHookAtTopLevel: NestJS method, not a React hook
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -83,13 +90,21 @@ export async function bootstrap(): Promise<NestExpressApplication> {
         queue: 'main_service',
       },
     });
-
-    await app.startAllMicroservices();
   }
+
+  const transportPort = configService.tcpTransportPort;
+  app.connectMicroservice({
+    transport: Transport.TCP,
+    options: { host: '0.0.0.0', port: transportPort.port },
+  });
+
+  await app.startAllMicroservices();
 
   if (configService.documentationEnabled) {
     setupSwagger(app);
   }
+
+  app.use(expressCtx);
 
   // Starts listening for shutdown hooks
   if (!configService.isDevelopment) {
@@ -97,17 +112,11 @@ export async function bootstrap(): Promise<NestExpressApplication> {
   }
 
   const port = configService.appConfig.port;
+  await app.listen(port);
 
-  /*
-   * Vite plugin binds the server in dev mode (PROD===false); in all other runtimes import.meta.env is undefined.
-   * biome-ignore lint/style/useNamingConvention: PROD is Vite's injected env key
-   */
-  const viteEnv = (import.meta as unknown as { env?: { PROD?: boolean } }).env;
-
-  if (viteEnv?.PROD) {
-    await app.listen(port);
-    console.info(`server running on http://localhost:${port}`);
-  }
+  console.info(
+    `server running on http://localhost:${port}/svc/template/documentation#`,
+  );
 
   return app;
 }

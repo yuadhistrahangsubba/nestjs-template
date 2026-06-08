@@ -2,12 +2,13 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 import { IsDateString, IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { PageOptionsDto } from '../../../common/dto/page-options.dto';
-import { AuditEvent } from '../entities/audit-log.entity';
+import { AuditEvent } from '../constants/audit-event.enum';
 
 export class AuditLogPageOptionsDto extends PageOptionsDto {
   @ApiPropertyOptional({
     description: 'Filter by event type (CREATE, READ, UPDATE, DELETE)',
     enum: AuditEvent,
+    enumName: 'AuditEvent',
   })
   @IsOptional()
   @IsEnum(AuditEvent)

@@ -10,8 +10,8 @@ export class UserDto extends AbstractDto {
   @ApiProperty()
   identificationNo!: string;
 
-  @ApiProperty({ nullable: true, enum: RoleType })
-  role!: RoleType;
+  @ApiProperty({ enum: RoleType, enumName: 'RoleType' })
+  roleType!: RoleType;
 
   @ApiProperty({ nullable: true })
   avatar?: string | null;
@@ -26,7 +26,7 @@ export class UserDto extends AbstractDto {
     super(entity);
     this.fullName = entity.fullName;
     this.identificationNo = entity.identificationNo;
-    this.role = entity.role;
+    this.roleType = entity.roleType;
     this.avatar = entity.avatar;
     this.mobileNo = entity.mobileNo;
     this.isActive = entity.isActive;
