@@ -35,21 +35,20 @@ export class CreateUserHandler
         });
       }
 
-      // Check if user with this CID already exists
-      const existingUserByCid = await this.userRepository.findOne({
-        where: { identificationNo: dto.identificationNo },
-        relations: ['roles'],
-      });
+      // Check for existing user by CID and mobile in parallel (H5 fix)
+      const [existingUserByCid, existingUserByMobile] = await Promise.all([
+        this.userRepository.findOne({
+          where: { identificationNo: dto.identificationNo },
+        }),
+        this.userRepository.findOne({
+          where: { mobileNo: dto.mobileNo },
+        }),
+      ]);
 
       if (existingUserByCid) {
         // Return existing user instead of throwing error (idempotent creation)
         return existingUserByCid;
       }
-
-      // Check if user with this mobile number already exists
-      const existingUserByMobile = await this.userRepository.findOne({
-        where: { mobileNo: dto.mobileNo },
-      });
 
       if (existingUserByMobile) {
         throw new RpcException({

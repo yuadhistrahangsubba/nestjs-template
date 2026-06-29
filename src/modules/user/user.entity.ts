@@ -1,4 +1,4 @@
-import { Column, Entity } from 'typeorm';
+import { Column, Entity, Index } from 'typeorm';
 
 import { AbstractEntity } from '../../common/abstract.entity.ts';
 import { RoleType } from '../../constants/role-type.ts';
@@ -12,6 +12,7 @@ export class UserEntity extends AbstractEntity<UserDto> {
   fullName!: string;
 
   @Column({ type: 'enum', enum: RoleType, default: RoleType.USER })
+  @Index()
   roleType!: RoleType;
 
   @Column({ type: 'varchar' })
@@ -21,11 +22,13 @@ export class UserEntity extends AbstractEntity<UserDto> {
   password!: string;
 
   @Column({ nullable: true, type: 'varchar' })
+  @Index()
   mobileNo!: string | null;
 
   @Column({ nullable: true, type: 'varchar' })
   avatar!: string | null;
 
   @Column({ nullable: true, default: true })
+  @Index()
   isActive!: boolean;
 }

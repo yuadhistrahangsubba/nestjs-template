@@ -134,6 +134,12 @@ export class ApiConfigService {
       migrationsRun: false,
       logging: this.getBoolean('ENABLE_ORM_LOGS'),
       namingStrategy: new SnakeNamingStrategy(),
+      extra: {
+        max: 20,
+        min: 5,
+        idleTimeoutMillis: 30_000,
+        connectionTimeoutMillis: 5000,
+      },
     };
   }
 

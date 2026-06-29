@@ -3,10 +3,10 @@ import bcrypt from 'bcrypt';
 /**
  * generate hash from password or string
  * @param {string} password
- * @returns {string}
+ * @returns {Promise<string>}
  */
-export function generateHash(password: string): string {
-  return bcrypt.hashSync(password, 10);
+export function generateHash(password: string): Promise<string> {
+  return bcrypt.hash(password, 10);
 }
 
 /**

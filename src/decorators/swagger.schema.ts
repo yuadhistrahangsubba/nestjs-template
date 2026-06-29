@@ -45,14 +45,16 @@ function explore(instance: object, propertyKey: string | symbol) {
       propertyKey,
     ) ?? {};
 
-  const parametersWithType = _.mapValues(
-    reverseObjectKeys(routeArgsMetadata),
-    (param) => ({
-      type: types[param.index],
-      name: param.data,
-      required: true,
-    }),
-  );
+  const routeArgsRecord = reverseObjectKeys(routeArgsMetadata) as Record<
+    string,
+    { index: number; data: string }
+  >;
+
+  const parametersWithType = _.mapValues(routeArgsRecord, (param) => ({
+    type: types[param.index],
+    name: param.data,
+    required: true,
+  }));
 
   for (const [key, value] of Object.entries(parametersWithType)) {
     const keyPair = key.split(':');
