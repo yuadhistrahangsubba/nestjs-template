@@ -1,183 +1,171 @@
-# Awesome NestJS Boilerplate v11
+# NestJS Backend Template
 
-[![Awesome NestJS](https://img.shields.io/badge/Awesome-NestJS-blue.svg?longCache=true&style=flat-square)](https://github.com/juliandavidmr/awesome-nestjs)
+An enterprise-grade **NestJS 11** backend/API template — TypeScript, PostgreSQL + TypeORM,
+RS256 JWT auth, CQRS, i18n, background jobs, and a large set of production integrations wired in.
+It is an opinionated, ever-evolving starting point for new Node backend services, and is currently
+configured as the API for the DKC platform (`dkc-backend`).
 
-> This is an ever-evolving, very opinionated architecture and dev environment for new node projects using [NestJS](https://nestjs.com). Questions, feedback, and for now, even bikeshedding are welcome. 😄
+Built on top of the excellent [Awesome NestJS Boilerplate](https://github.com/NarHakobyan/awesome-nest-boilerplate)
+(MIT) and extended with additional integrations.
 
-## Getting started
-
-```bash
-# 1. Clone the repository or click on "Use this template" button.
-npx degit NarHakobyan/awesome-nest-boilerplate my-nest-app
-
-# 2. Enter your newly-cloned folder.
-cd my-nest-app
-
-# 3. Create Environment variables file.
-cp .env.example .env
-
-# 3. Install dependencies. (Make sure pnpm is installed: https://pnpm.io/installation)
-pnpm install
-```
-
-## Checklist
-
-When you use this template, try follow the checklist to update your info properly
-
-- [ ] Change the author name in `LICENSE`
-- [ ] Change configurations in `.env`
-- [ ] Remove the `.github` folder which contains the funding info
-- [ ] Clean up the README.md file
-
-And, enjoy :)
-<details>
-  <summary>Node Development</summary>
-
-### Scripts
-
-```bash
-# 4. Run development server and open http://localhost:3000
-pnpm start:dev
-
-# 5. Read the documentation linked below for "Setup and development".
-```
-
-### Build
-
-To build the App, run
-
-```bash
-pnpm build:prod
-```
-
-And you will see the generated file in `dist` that ready to be served.
-
-</details>
-
-<details>
-  <summary>Deno Development</summary>
-
-We are excited to announce that this project now supports Deno! You can use Deno to run, build, and test your application. 🦕
-
-#### Scripts
-
-Here are the available scripts for Deno:
-
-```bash
-# Start the development server
-deno task start
-
-# Start the server with file watcher
-deno task watch
-
-# Run tests
-deno task test
-
-# Compile the application (not working yet)
-deno task compile
-```
-
-To build the App using Deno, run:
-
-```bash
-deno task buildr
-```
-
-And you will see the generated file in `dist` that is ready to be served.
-
-</details>
-
-<details>
-  <summary>Bun Development</summary>
-
-We are excited to announce that this project now supports Bun! You can use Bun to run, build, and test your application. 🧅
-
-#### Scripts
-
-Here are the available scripts for Bun:
-
-```bash
-# Start the development server
-bun start:dev:bun
-
-# Start the server with file watcher
-bun watch:bun
-
-# Run tests
-
-bun test
-
-# Build the application
-
-bun build:bun
-```
-
-And you will see the generated file in `dist` that is ready to be served.
-
-</details>
-
+---
 
 ## Features
 
-<dl>
-  <!-- <dt><b>Quick scaffolding</b></dt>
-  <dd>Create modules, services, controller - right from the CLI!</dd> -->
+- **NestJS 11** with a modular, feature-oriented architecture (`src/modules/*`).
+- **PostgreSQL + TypeORM** with migrations, entity subscribers, and transactional support.
+- **Authentication** — Passport + JWT using **RS256** (public/private key pair), guards, and role decorators.
+- **CQRS** — command/query separation via `@nestjs/cqrs`.
+- **Background jobs & queues** — BullMQ on Redis (`ioredis`), plus scheduled tasks (`@nestjs/schedule`).
+- **Microservices (optional)** — NATS transport, enabled conditionally via env.
+- **Payments & subscriptions** — Stripe (`@golevelup/nestjs-stripe`) and RevenueCat, with webhook handling.
+- **Search** — Meilisearch integration.
+- **Media** — AWS S3 storage, image processing with `sharp`, and BlurHash placeholders.
+- **AI** — pluggable providers (OpenAI-compatible, Google GenAI, fal.ai) for text/image generation.
+- **Notifications** — Firebase Admin (push / messaging).
+- **i18n** — `nestjs-i18n` with a configurable fallback language.
+- **API docs** — Swagger / OpenAPI (`@nestjs/swagger`), toggleable via env.
+- **Hardening** — Helmet, rate limiting (`@nestjs/throttler`), compression, CORS, request context (`nestjs-cls`).
+- **Observability** — health checks (`@nestjs/terminus`) and request logging (`morgan`).
+- **Multi-runtime** — runs on Node, Bun, or Deno.
 
-  <dt><b>Instant feedback</b></dt>
-  <dd>Enjoy the best DX (Developer eXperience) and code your app at the speed of thought! Your saved changes are reflected instantaneously.</dd>
+---
 
-  <dt><b>JWT Authentication</b></dt>
-  <dd>Installed and configured JWT authentication.</dd>
+## Tech Stack
 
-  <dt><b>Next generation Typescript</b></dt>
-  <dd>Always up to date typescript version.</dd>
+| Area              | Technology |
+| ----------------- | ---------- |
+| Framework         | [NestJS 11](https://nestjs.com) + TypeScript |
+| Database / ORM    | PostgreSQL + [TypeORM](https://typeorm.io) |
+| Auth              | Passport + JWT (RS256) |
+| Cache / Queues    | Redis (`ioredis`) + [BullMQ](https://docs.bullmq.io) |
+| Messaging         | [NATS](https://nats.io) microservices (optional) |
+| Payments          | [Stripe](https://stripe.com) + [RevenueCat](https://www.revenuecat.com) |
+| Search            | [Meilisearch](https://www.meilisearch.com) |
+| Storage / Media   | AWS S3, `sharp`, BlurHash |
+| AI                | OpenAI-compatible, Google GenAI, fal.ai |
+| Notifications     | Firebase Admin |
+| API docs          | Swagger / OpenAPI |
+| Tooling           | pnpm, ESLint + Biome, Jest, Husky, VitePress (docs) |
 
-  <dt><b>Industry-standard routing</b></dt>
-  <dd>It's natural to want to add pages (e.g. /about`) to your application, and routing makes this possible.</dd>
+---
 
-  <dt><b>Environment Configuration</b></dt>
-  <dd>development, staging and production environment configurations</dd>
+## Getting Started
 
-  <dt><b>Swagger Api Documentation</b></dt>
-  <dd>Already integrated API documentation. To see all available endpoints visit http://localhost:3000/documentation</dd>
+### Prerequisites
+- **Node.js** 20+ (or Bun / Deno)
+- **pnpm** (this repo uses a pnpm lockfile — do not use npm or yarn)
+- A **PostgreSQL** database, and **Redis** if you use queues/background jobs
 
-  <dt><b>OpenAPI MCP Integration</b></dt>
-  <dd>Let any AI assistant (Claude, Cursor, Windsurf, etc.) call your API directly. Point the OpenAPI MCP server at <code>/documentation-json</code> and every endpoint becomes a callable tool — zero code changes required. See <a href="https://narhakobyan.github.io/awesome-nest-boilerplate/openapi-mcp.html">OpenAPI MCP Integration</a>.</dd>
+### 1. Install dependencies
 
-  <dt><b>Node, Bun, Deno</b></dt>
-  <dd>Support for Node, Bun, and Deno. You can run, build, and test your application using any of these runtime.</dd>
+```bash
+pnpm install
+```
 
-  <dt><b>Linter</b></dt>
-  <dd>Biome + ESLint = ❤️</dd>
-</dl>
+### 2. Configure environment variables
 
-## Documentation
+```bash
+cp .env.example .env
+```
 
-This project includes a `docs` folder with more details on:
+Then fill in the values. The template covers a broad set of integrations — you only need the ones
+you actually use. Key groups (see `.env.example` for the full list):
 
-1.  [Getting Started](https://narhakobyan.github.io/awesome-nest-boilerplate/getting-started.html)
-1.  [Setup and development](https://narhakobyan.github.io/awesome-nest-boilerplate/development.html#first-time-setup)
-1.  [Architecture](https://narhakobyan.github.io/awesome-nest-boilerplate/architecture.html)
-1.  [Naming Cheatsheet](https://narhakobyan.github.io/awesome-nest-boilerplate/naming-cheatsheet.html)
-1.  [Linting](https://narhakobyan.github.io/awesome-nest-boilerplate/linting.html)
-1.  [Code Generation](https://narhakobyan.github.io/awesome-nest-boilerplate/code-generation.html)
-1.  [OpenAPI MCP Integration](https://narhakobyan.github.io/awesome-nest-boilerplate/openapi-mcp.html)
+- **Core:** `NODE_ENV`, `PORT`, `API_VERSION`, `API_BASE_URL`, `FRONTEND_URL`, `CORS_ORIGINS`
+- **Database:** `DB_TYPE`, `DB_HOST`, `DB_PORT`, `DB_USERNAME`, `DB_PASSWORD`, `DB_DATABASE`
+- **Auth (RS256):** `JWT_PRIVATE_KEY`, `JWT_PUBLIC_KEY`, `JWT_EXPIRATION_TIME`
+- **Cache / messaging:** `REDIS_URL`, `NATS_ENABLED`, `NATS_HOST`, `NATS_PORT`
+- **Storage:** `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `AWS_S3_BUCKET_NAME`
+- **Search:** `MEILI_HOST`, `MEILI_MASTER_KEY`
+- **Payments:** `STRIPE_*`, `REVENUECAT_API_KEY`, `REVENUECAT_WEBHOOK_SECRET`
+- **AI:** `GOOGLE_API_KEY`, `FAL_API_KEY`, and related model IDs
+- **Notifications:** `FIREBASE_PROJECT_ID`, `FIREBASE_CLIENT_EMAIL`, `FIREBASE_PRIVATE_KEY`
+- **Docs:** `ENABLE_DOCUMENTATION`
 
-## Gold Sponsors
+### 3. Run database migrations
 
-<table>
-  <tr>
-    <td align="center">
-      <a href="https://moneteam.com" target="_blank"><b>M One</b></a>
-    </td>
-    <td align="center">
-      <a href="https://hrdrone.am" target="_blank"><b>HR Drone</b></a>
-    </td>
-  </tr>
-</table>
+```bash
+pnpm migration:run
+```
 
-## Community
+### 4. Start the development server
 
-For help, discussion about best practices, or any other conversation that would benefit from being searchable:
+```bash
+pnpm start:dev        # Vite hot-reload dev server (preferred)
+# or
+pnpm nest:start:dev   # NestJS CLI watch mode
+```
 
-[Discuss Awesome NestJS Boilerplate on GitHub](https://github.com/NarHakobyan/awesome-nest-boilerplate/discussions)
+By default the API is served on `http://localhost:$PORT`, and Swagger docs are available at
+`/documentation` when `ENABLE_DOCUMENTATION` is on.
+
+---
+
+## Scripts
+
+| Command                     | Description |
+| --------------------------- | ----------- |
+| `pnpm start:dev`            | Dev server with hot reload (Vite) |
+| `pnpm nest:start:dev`       | NestJS CLI watch mode |
+| `pnpm build:prod`           | Production build |
+| `pnpm start:prod`           | Run the production build (`dist/main.js`) |
+| `pnpm lint` / `pnpm lint:fix` | ESLint (with autofix) |
+| `pnpm test` / `pnpm test:watch` | Jest unit tests |
+| `pnpm test:e2e`             | End-to-end tests |
+| `pnpm test:cov`             | Coverage report |
+| `pnpm generate` / `pnpm g`  | Scaffold a module/resource (awesome-nestjs-schematics) |
+| `pnpm migration:generate`   | Generate a migration from entity changes |
+| `pnpm migration:create`     | Create an empty migration |
+| `pnpm migration:run`        | Apply pending migrations |
+| `pnpm migration:revert`     | Revert the last migration |
+| `pnpm docs:dev`             | Run the VitePress docs site locally |
+
+---
+
+## Project Structure
+
+```
+src/
+├─ modules/            # Feature modules (one folder per domain)
+├─ common/             # Shared DTOs, abstract entities, helpers
+├─ database/           # Migrations, seeds, data source config
+├─ decorators/         # Custom decorators (auth, swagger, transforms)
+├─ guards/             # Auth / role guards
+├─ interceptors/       # Cross-cutting interceptors
+├─ filters/            # Exception filters
+├─ providers/          # Shared providers/services
+├─ shared/             # Shared module (config, services)
+├─ i18n/               # Translation resources
+├─ constants/ types/   # Enums, constants, shared types
+└─ main.ts             # Application entry point
+```
+
+Additional docs live in `docs/` (VitePress). Database configuration is in `ormconfig.ts`, and
+container setup in `Dockerfile` / `docker-compose.yml`.
+
+---
+
+## Deployment
+
+The service ships with a `Dockerfile` and `docker-compose.yml`. Build the production bundle with
+`pnpm build:prod` and run `pnpm start:prod`, or use the provided container setup. Provide the same
+environment variables in your deployment platform's secrets.
+
+---
+
+## Contributing
+
+Contributions are welcome. Please read the **[Contributing Guide](./CONTRIBUTING.md)** for the
+workflow, commit conventions, and coding guidelines before opening a pull request.
+
+## Security
+
+Found a vulnerability? **Do not open a public issue.** Please follow the responsible-disclosure
+process in our **[Security Policy](./SECURITY.md)**.
+
+## License
+
+Licensed under the **[MIT License](./LICENSE)**. This project is built on the
+[Awesome NestJS Boilerplate](https://github.com/NarHakobyan/awesome-nest-boilerplate) by Narek
+Hakobyan; the original MIT copyright notice is retained.
